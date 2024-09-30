@@ -23,6 +23,7 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <vector>
+#include <boost/version.hpp>
 
 //
 #include "../../initializers.hpp"
@@ -519,9 +520,15 @@ namespace boost { namespace application { namespace example {
          }
 
 #if defined(BOOST_APPLICATION_STD_WSTRING)
-        path_entry = path.branch_path().wstring();
+	if constexpr (BOOST_VERSION >= 108500)
+		path_entry = path.parent_path().wstring();
+        else
+		path_entry = path.branch_path().wstring();
 #else
-        path_entry = path.branch_path().string();
+	if constexpr (BOOST_VERSION >= 108500)
+		path_entry = path.parent_path().string();
+	else
+        	path_entry = path.branch_path().string();
 #endif
 
          error = RegSetValueEx(hkey, TEXT("path"), 0, REG_EXPAND_SZ,
