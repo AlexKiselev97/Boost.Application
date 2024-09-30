@@ -520,15 +520,9 @@ namespace boost { namespace application { namespace example {
          }
 
 #if defined(BOOST_APPLICATION_STD_WSTRING)
-	if constexpr (BOOST_VERSION >= 108500)
-		path_entry = path.parent_path().wstring();
-        else
-		path_entry = path.branch_path().wstring();
+	path_entry = path.parent_path().wstring();
 #else
-	if constexpr (BOOST_VERSION >= 108500)
-		path_entry = path.parent_path().string();
-	else
-        	path_entry = path.branch_path().string();
+	path_entry = path.parent_path().string();
 #endif
 
          error = RegSetValueEx(hkey, TEXT("path"), 0, REG_EXPAND_SZ,
